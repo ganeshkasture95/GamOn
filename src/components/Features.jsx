@@ -1,6 +1,38 @@
-import React from 'react'
-import { TiLocationArrow } from 'react-icons/ti'
-import BentoCard from './BentoCard'
+import React, { useRef, useState } from 'react';
+import { TiLocationArrow } from 'react-icons/ti';
+import BentoCard from './BentoCard';
+
+const BentoTilt = ({ children, className = '' }) => {
+    const [transformStyle, setTransformStyle] = useState("");
+    const itemRef = useRef(null);
+
+    // function to move the cards from the isr position 
+    const handleMouseMove = (event) => {
+        if (!itemRef.current) return;
+
+        const { left, top, width, height } =
+            itemRef.current.getBoundingClientRect();
+
+        const relativeX = (event.clientX - left) / width;
+        const relativeY = (event.clientY - top) / height;
+
+        const tiltX = (relativeY - 0.5) * 15;
+        const tiltY = (relativeX - 0.5) * -15;
+
+        const newTransform = `perspective(700px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(.95, .95, .95)`;
+        setTransformStyle(newTransform);
+    };
+
+    const handleMouseLeave = () => {
+        setTransformStyle("");
+    };
+
+    return (
+        <div className={className} ref={itemRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ transform: transformStyle }}>
+            {children}
+        </div>
+    )
+}
 
 const Features = () => {
     return (
@@ -20,7 +52,7 @@ const Features = () => {
 
 
                 {/* the actual bento grid of the features */}
-                <div className='border-hsla relative mb-7 h-96 w-full  overflow-hidden rounded-md md:h-[65vh]'>
+                <BentoTilt className='border-hsla relative mb-7 h-96 w-full  overflow-hidden rounded-md md:h-[65vh]'>
                     <BentoCard
 
                         src="videos/feature-1.mp4"
@@ -30,10 +62,10 @@ const Features = () => {
                         description="A cross-platform metagame app, turning your activities across Web2 and Web3 games into a rewarding adventure."
                     // isComingSoon
                     />
-                </div>
+                </BentoTilt>
 
                 <div className=' grid h-[135vh] grid-cols-2 grid-rows-3 gap-7 '>
-                    <div className='bento-tilt_1 row-span-1 md:col-span-1 md:max-h-dvh md:row-span-2
+                    <BentoTilt className='bento-tilt_1 row-span-1 md:col-span-1 md:max-h-dvh md:row-span-2
                          '>
                         <BentoCard
                             src="videos/feature-2.mp4"
@@ -41,38 +73,38 @@ const Features = () => {
                             description="An anime and gaming-inspired NFT collection - the IP primed for expansion."
                         />
 
-                    </div>
-                    <div className='bento-tilt_1 row-span-1 ms-32 md:col-span-1 md:ms-0'>
+                    </BentoTilt>
+                    <BentoTilt className='bento-tilt_1 row-span-1 ms-32 md:col-span-1 md:ms-0'>
                         <BentoCard
-                        src="videos/feature-3.mp4"
-                        title={<>b<b>l</b>aze</>}
-                        description="A decentralized, community-driven, and gamified social network for the metaverse."
+                            src="videos/feature-3.mp4"
+                            title={<>b<b>l</b>aze</>}
+                            description="A decentralized, community-driven, and gamified social network for the metaverse."
                         />
-                    </div>
-                    <div className='bento-tilt_1 me-14 md:col-span-1 md:me-0
+                    </BentoTilt>
+                    <BentoTilt className='bento-tilt_1 me-14 md:col-span-1 md:me-0
                     '>
                         <BentoCard
-                        src="videos/feature-4.mp4"
-                        title={<>s<b>h</b>ine</>}
-                        description="A cross-platform, AI-powered, and gamified productivity and learning platform."
+                            src="videos/feature-4.mp4"
+                            title={<>s<b>h</b>ine</>}
+                            description="A cross-platform, AI-powered, and gamified productivity and learning platform."
                         />
-                    </div>
+                    </BentoTilt>
 
-                    <div className=' bento-tilt_2 '>
+                    <BentoTilt className=' bento-tilt_2 '>
                         <div className='flex size-full flex-col justify-between bg-violet-300 p-5 '>
 
                             <h1 className='bento-title special-font'>
                                 M<b>o</b>re coming soon!
                             </h1>
-                            <TiLocationArrow className='m-5 scale-[5] self-end'/>
+                            <TiLocationArrow className='m-5 scale-[5] self-end' />
                         </div>
-                    </div>
+                    </BentoTilt>
 
-                    <div className='bento-tilt_2'>
-                        <video src="videos/feature-5.mp4" loop muted autoPlay 
-                        className='size-full object-cover object-center'/>
-                       
-                    </div>
+                    <BentoTilt className='bento-tilt_2'>
+                        <video src="videos/feature-5.mp4" loop muted autoPlay
+                            className='size-full object-cover object-center' />
+
+                    </BentoTilt>
                 </div>
 
 
